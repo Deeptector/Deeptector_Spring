@@ -16,6 +16,8 @@
   >DeepLearning Server에서 감지된 알림을 Socket으로 받아 Android에게 Push알림을 보낸다.
 - 동영상 Download 요청<br/><br/>
   >Web Server에서 동영상 받기 버튼을 누를 시 요청한 동영상을 Android에게 Socket으로 보낸다.
+  
+  <br/><br/>
 ## 프로젝트 관련 링크
 
 - <a href="https://github.com/Deeptector/Deeptector">Deeptector</a>
