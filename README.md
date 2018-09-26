@@ -10,11 +10,11 @@
  <br/><br/>
  
 ## 요청
-- 동영상 목록 요청<br/><br/>
+- 동영상 목록 요청
   >MySQL에 저장되어 있는 동영상의 목록들을 WebServer의 (/getList) 요청을 get방식으로 받아 넘겨준다.
-- 감지 알림 요청<br/><br/>
+- 감지 알림 요청
   >DeepLearning Server에서 감지된 알림을 Socket으로 받아 Android에게 Push알림을 보낸다.
-- 동영상 Download 요청<br/><br/>
+- 동영상 Download 요청<br/>
   >Web Server에서 동영상 받기 버튼을 누를 시 요청한 동영상을 Android에게 Socket으로 보낸다.
   
   <br/><br/>
