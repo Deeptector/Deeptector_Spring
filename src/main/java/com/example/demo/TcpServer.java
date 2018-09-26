@@ -43,7 +43,7 @@ public class TcpServer {
    private Thread sendThread;
 
    public TcpServer() {
-
+	   //push알림을 주는 서버소켓과 동영상을 보내는 서버소켓을 생성
       try {
          server = new ServerSocket(server_port);
          push_server = new ServerSocket(push_server_port);
@@ -54,7 +54,7 @@ public class TcpServer {
       }
       
       System.out.println("Initialize complate");
-
+      //Android 소켓과의 연결을 위한 Thread
       Thread t = new Thread() {
          
          public void run() {
@@ -86,7 +86,8 @@ public class TcpServer {
    
 
    
-   class SendThread extends Thread {
+   /*동영상을 보내는 Thread
+    * class SendThread extends Thread {
       
       public SendThread() {
          System.out.println("Create Send Thread");
@@ -126,9 +127,9 @@ public class TcpServer {
          }
          this.interrupt();
       }
-   }
+   }*/
 
-   
+   //동영상 파일을 보내는 Method
    public void fileSend() {
       //sendThread = new SendThread();
       
@@ -159,7 +160,7 @@ public class TcpServer {
          }
          
          System.out.println("Sender Finish : " + file.getName());
-         
+         //Android에서 file을 다 받았다는 신호처리
          String receive = dis.readUTF();
          System.out.println("Sender Finish_receive : " + receive);
          
@@ -171,7 +172,7 @@ public class TcpServer {
          return ;
       }
    }
-   
+   //push알림을 위한 함수
    public void push() {
       try {
          push_dos.writeUTF("push");

@@ -8,6 +8,8 @@ import java.net.Socket;
 import java.sql.*;
 import java.util.*;
 
+
+//DeepLearning Server와 통신을 위한 class
 public class CppServer {
 	
 	public DataInputStream dis;
@@ -18,9 +20,9 @@ public class CppServer {
 	private PreparedStatement pstmt;
 	public CppServer(TcpServer tcpServer) {
 		this.tcpServer = tcpServer;
-		
+	
 	try {
-		//port 8086
+		//port 8086으로 서버소켓을 연다
 		server = new ServerSocket(8086);
 	} catch (IOException e) {
 		// TODO Auto-generated catch block
@@ -28,17 +30,13 @@ public class CppServer {
 	}
 	System.out.println("Initialize complate");
 
+	//DeepLearning Server와 소켓 연결을 위한 스레드
 	Thread t = new Thread() {
 		public void run() {
 			while (true) {
 				try {
 					Socket client = server.accept();
 					System.out.println("cppServer client come ok");
-					// BufferedOutputStream bos = new
-					// BufferedOutputStream(client.getOutputStream());
-					// out = new PrintWriter(new BufferedWriter(new
-					// OutputStreamWriter(client.getOutputStream())), true);
-					// out.flush();
 					dos = new DataOutputStream(client.getOutputStream());
 					dis = new DataInputStream(client.getInputStream());
 					new pushThread(dis, tcpServer);
@@ -54,7 +52,7 @@ public class CppServer {
 	t.start();
 }
 	
-	
+	//DeepLearning Server에서 감지된 알림을 받아 Android에게 Push알림 보냄
 	class pushThread extends Thread{
 		
 		DataInputStream dis = null;
@@ -71,6 +69,7 @@ public class CppServer {
 		public void run() {
 			while(true) {
 				try {
+					//감지된 알림을 받음
 					dis.read(b1, 0, 4);
 					String data = new String(b1);
 					System.out.println("Read Line Data = " + data);
@@ -79,14 +78,14 @@ public class CppServer {
 						System.out.println("call push at cpp file");
 					dis.read(b2);
 					filename = new String(b2); 
-						//DB insert
+						//DataBase에 삽입
 						conn = null;
 						pstmt = null;
 						String jdbc_driver = "com.mysql.jdbc.Driver";
 						String jdbc_url = "jdbc:mysql://localhost:3306/video"; 
 						try {
 							Class.forName(jdbc_driver);
-							conn = DriverManager.getConnection(jdbc_url,"root","1234");
+							conn = DriverManager.getConnection(jdbc_url,"root","hansung");
 						} catch (Exception e) {
 							e.printStackTrace();
 						}
@@ -103,7 +102,7 @@ public class CppServer {
 						finally {
 							disconnect();
 						}
-						//tcpServer's push
+						//tcpServer class에서 Android에게 Push알림 보냄
 						tcpServer.push();
 						System.out.println("cppServer -> tcpServer.push() OK");
 					}
@@ -129,9 +128,6 @@ public class CppServer {
 				e.printStackTrace();
 			}
 		}
-	}
-	public void pushThreadStart() {
-		//new pushThread(dis, tcpServer);
 	}
 }
 

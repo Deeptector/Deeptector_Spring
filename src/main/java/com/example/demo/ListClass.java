@@ -1,5 +1,6 @@
 package com.example.demo;
 
+//DataBase의 list table을 위한 Model
 public class ListClass {
 	private String date;
 	public String getDate() {

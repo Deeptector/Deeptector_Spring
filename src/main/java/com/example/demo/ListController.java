@@ -24,20 +24,21 @@ import com.google.gson.Gson;
 public class ListController {
 	
 	public int sema = 0;
-	public Vector<String> v = new Vector<String>();
+	public Vector<String> requestVideoVector = new Vector<String>();
 	
 	List<ListClass> vlist = new ArrayList<ListClass>();
 	TcpServer tcpServer;
 	CppServer cppserver;
 	File file;
 	boolean isFirst = true;
+	
+	//생성자가 불릴 때 ServerSocket 활성화
 	public ListController(){
 		if(isFirst == true) {
 		tcpServer = new TcpServer();
 		System.out.println("new TcpServer!!!");
 		cppserver = new CppServer(tcpServer);
 		System.out.println("new cppServer!!!");
-		cppserver.pushThreadStart();
 		
 		isFirst = false;
 		}
@@ -47,24 +48,7 @@ public class ListController {
 	DAO dao;
 	
 	
-	/*@RequestMapping(value = "/")
-	@CrossOrigin
-	public ResponseEntity get(){
-		
-		ListClass list = new ListClass("20180524");
-		
-		return new ResponseEntity(list, HttpStatus.OK);
-	}*/
-	
-	
-	/*@RequestMapping(value="/postList", method = RequestMethod.POST)
-	public ResponseEntity<ListClass> postList(@RequestBody ListClass list){
-		System.out.println("/postList OK1");
-		dao.createList(list);
-		System.out.println("/postList OK2");
-		return new ResponseEntity<ListClass>(list, HttpStatus.OK);
-	}*/
-	
+	//WebServer에게 DataBase목록을 주는 Method
 	@RequestMapping(value = "/getList", method = RequestMethod.GET)
 	public ResponseEntity<ArrayList<ListClass>> getList(){
 		System.out.println("get react request OK");
@@ -76,32 +60,23 @@ public class ListController {
 	}
 	
 	
-	/*@RequestMapping(value = "/list", method = RequestMethod.POST)
-	@CrossOrigin
-	public ResponseEntity<Object> update(@RequestBody ArrayList<ListClass> vlist) {
-		Gson gson = new Gson();
-		gson.toJson(vlist);
-		String a = "OK";
-		System.out.println("post ok");
-		return new ResponseEntity<Object>(a, HttpStatus.OK);
-	}*/
-	
+	//동영상 Download를 위한 Method
 	@RequestMapping(value = "/and", method = RequestMethod.POST)
 	@CrossOrigin
 	public ResponseEntity<String> goAndroid(@RequestBody HashMap<String, String> input) {
 		System.out.println("react post and ok");
 		
 		//wait
-		System.out.println("before : " + v.size());
+		System.out.println("before : " + requestVideoVector.size());
 		
-		v.add(input.get("videoName"));
+		requestVideoVector.add(input.get("videoName"));
 		
-		System.out.println("after : " + v.size());
+		System.out.println("after : " + requestVideoVector.size());
 		
-		while(v.size()!=0 && sema == 0)
+		while(requestVideoVector.size()!=0 && sema == 0)
 		{
 			sema = 1;
-			file = new File("C:\\Users\\hojin\\Desktop\\file\\" + v.get(0).trim());
+			file = new File("C:\\Users\\hojin\\Desktop\\file\\" + requestVideoVector.get(0).trim());
 			tcpServer.file = file;
 		
 			tcpServer.filelength = ((long)file.length());
@@ -110,7 +85,7 @@ public class ListController {
 			tcpServer.fileSend();
 		
 			sema = 0;
-			v.remove(0);
+			requestVideoVector.remove(0);
 		}
 		
 		

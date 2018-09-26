@@ -15,32 +15,28 @@ import org.springframework.stereotype.Repository;
 
 import com.mysql.jdbc.Statement;
 
-
+//Database 관리를 위한 class
 @Repository
 public class DAO implements ListDAO {
 
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 	
+	//DataBase에 insert함
 	@Override
 	public int createList(ListClass list) {
-		System.out.println("DAO1");
 		KeyHolder keyHolder = new GeneratedKeyHolder();
-		System.out.println("DAO2");
 		jdbcTemplate.update((Connection connection) -> {
-			System.out.println("DAO3");
 			PreparedStatement preparedStatement;
-			System.out.println("DAO4");
 			preparedStatement = connection.prepareStatement("INSERT INTO list(date) VALUES(?)",Statement.RETURN_GENERATED_KEYS);
-			System.out.println("DAO5");
 			preparedStatement.setString(1, list.getDate());
-			System.out.println("DAO6");
 			return preparedStatement;
 		}, keyHolder);
 		
 		return 1;
 	}
 
+	//DataBase에 접근하여 data 가져옴
 	@Override
 	public List<ListClass> getList() {
 		
