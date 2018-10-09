@@ -14,12 +14,11 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class TcpServer {
-  // public int c = 0;
    public File file;
    public boolean flag = false;
    public boolean push = false;
    
-   
+   //video download하는 포트는 3003으로 설정
    public int server_port = 3003;
    public ServerSocket server;
    public Socket socket;
@@ -28,7 +27,7 @@ public class TcpServer {
    public InputStream is;
    public DataInputStream dis;
    
-   
+   //push 알림을 보내는 포트는 3003으로 설정
    public int push_server_port = 3004;
    public ServerSocket push_server;
    public Socket push_socket;
@@ -65,7 +64,6 @@ public class TcpServer {
                   push_socket = push_server.accept();
                   System.out.println("push_sever accept");
                   
-                  //c++;
                   System.out.println("TcpServer client come ok");
                
                   dis = new DataInputStream(socket.getInputStream());

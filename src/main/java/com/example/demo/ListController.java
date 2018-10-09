@@ -32,7 +32,7 @@ public class ListController {
 	File file;
 	boolean isFirst = true;
 	
-	//생성자가 불릴 때 ServerSocket 활성화
+	//생성자가 불릴 때 DeepLearing Server, Android와 소통하는 ServerSocket 활성화
 	public ListController(){
 		if(isFirst == true) {
 		tcpServer = new TcpServer();
@@ -73,6 +73,7 @@ public class ListController {
 		
 		System.out.println("after : " + requestVideoVector.size());
 		
+		//Android에서 Video Download를 완료했을 시 요청한 다음 동영상을 보냄
 		while(requestVideoVector.size()!=0 && sema == 0)
 		{
 			sema = 1;

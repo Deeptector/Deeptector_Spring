@@ -18,6 +18,8 @@ public class CppServer {
 	private TcpServer tcpServer;
 	private Connection conn;
 	private PreparedStatement pstmt;
+
+	//Android와 통신하는 클래스를 제어하기 위해 매개변수로 받음
 	public CppServer(TcpServer tcpServer) {
 		this.tcpServer = tcpServer;
 	
@@ -59,6 +61,7 @@ public class CppServer {
 		TcpServer tcpServer = null;
 		byte [] b1 = new byte[4];
 		byte [] b2 = new byte[20];
+		//생성자에서 Thread 실행
 		public pushThread(DataInputStream dis, TcpServer tcpServer) {
 			this.dis = dis;
 			this.tcpServer = tcpServer;					
@@ -74,6 +77,7 @@ public class CppServer {
 					String data = new String(b1);
 					System.out.println("Read Line Data = " + data);
 					String filename;
+					//DeepLearning Server에서 push라는 알림을 받으면
 					if(data.equals("push")) {
 						System.out.println("call push at cpp file");
 					dis.read(b2);
@@ -93,7 +97,6 @@ public class CppServer {
 						try {
 							pstmt =  conn.prepareStatement(sql);
 							pstmt.setString(1,filename);
-							//pstmt.setString(2, "11115396");
 							pstmt.executeUpdate();
 							System.out.println("Mysql insert OK");
 						} catch (SQLException e) {

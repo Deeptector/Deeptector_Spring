@@ -45,6 +45,7 @@ public class DAO implements ListDAO {
 		Collection<Map<String, Object>> rows = null;
 		rows = jdbcTemplate.queryForList("SELECT * FROM list order by date desc");
 		
+		//ArrayList에 모든 data를 저장
 		rows.stream().map((row) -> {
 			ListClass list = new ListClass();
 		list.setDate((String)row.get("date"));
